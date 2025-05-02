@@ -1,4 +1,3 @@
-// src/components/Dashboard.js
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import IndustrialProcessDiagram from './IndustrialProcessDiagram';
