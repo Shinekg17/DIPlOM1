@@ -10,7 +10,6 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-100">
       {/* Use the Navbar component instead of the inline navigation */}
       <Navbar />
-      
       <div className="container mx-auto px-4 py-8">
         <IndustrialProcessDiagram />
       </div>
