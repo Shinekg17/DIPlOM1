@@ -10,7 +10,6 @@ export const temperatureData = [
     { id: 't54', value: 54, position: { top: 400, left: 270 }, label: 'T' },
     { id: 't56', value: 56, position: { top: 485, left: 425 }, label: 'T' },
     { id: 't56_2', value: 56, position: { top: 485, left: 425 }, label: 'T' },
-
   ];
   
   // Даралтын өгөгдлийн анхны утга
@@ -179,4 +178,101 @@ export const temperatureData = [
     position: { top: 300, left: 1020 }
   };
 
-  
+  // T КОД 22 төрлийн өгөгдлийн блок
+export const codeBlockPanelData = [
+  {
+    id: 'codeBlock1',
+    leftText: 'T кон',
+    rightText: '22',
+    position: { top: 610, left: 60}
+  },
+  {
+    id: 'codeBlock2',
+    leftText: 'Lнү',
+    rightText: '22',
+    position: { top: 330, left: 425 }
+  }
+];
+
+export const boilerGaugePanel = {
+  id: 'boilerGaugePanel',
+  title: 'ABTOMAT',
+  bars: [
+    { label: 'L1', value: -17, level: 0.7 },
+    { label: 'L2', value: -9, level: 0.8 },
+    { label: 'L3', value: -32, level: 0.6 }
+  ],
+  position: { top: 50, left: 460 } 
+};
+
+ export const boilerInfoPanelData = {
+  id: 'boilerInfoPanel',
+  rows: [
+    { label: 'T-1', value: 438.1 },
+    { label: 'T-2', value: 438.4 },
+    { label: 'P\u0445/уур', value: 38.0 },
+    { label: 'F\u0445/уур', value: 65.2 }
+  ],
+  position: { top: 20, left: 900 } 
+};
+
+export const heaterTemperatureData = [
+  { id: 'heater_temp1', value: 656, position: { top: 140, left: 688 }, label: 'T' },
+  { id: 'heater_temp2', value: 507, position: { top: 140, left: 770 }, label: 'T' }
+];
+
+export const heaterAirParams = [
+  { id: 'tha', value: 336, label: 'Tха', position: { top: 232, left: 600 } },
+  { id: 'pha', value: 108, label: 'Pха', position: { top: 232, left: 660 } }
+];
+
+export const waterHeaterParams = [
+  { id: 'wh_pressure', value: -0.12, label: 'P', position: { top: 215, left: 730 } },
+  { id: 'wh_temp', value: 403, label: 'T', position: { top: 215, left: 785 } }
+];
+
+export const suctionPressureData = [
+  { id: 'suction_pressure', value: -32, label: 'Pси', position: { top: 255, left: 630 } }
+];
+
+export const flowForceData = [
+  { id: 'f650', value: -650, label: 'F', position: { top: 290, left: 665 } }
+];
+
+export const waterHeaterTempData = [
+  { id: 'wh_temp2', value: 397, label: 'T', position: { top: 280, left: 765 } }
+];
+
+export const airHeaterParams = [
+  { id: 'ah_pressure', value: -0.52, label: 'P', position: { top: 324, left: 740} },
+  { id: 'ah_temp', value: 262, label: 'T', position: { top: 324, left: 790 } }
+];
+
+export const o2SensorData = [
+  { id: 'o2_level', value: 19.0, label: 'O₂', position: { top: 340, left: 760 } }
+];
+
+export const blowerStaticPressureData = [
+  { id: 'blower_pressure', value: 130, label: 'Pср', position: { top: 357, left: 830 } }
+];
+
+export const airHeaterVacuumData = [
+  { id: 'ah_vacuum', value: -0.3, label: 'P', position: { top: 400, left: 750 } }
+];
+
+export const suctionAirTempData = [
+  { id: 'suction_temp', value: 34, label: 'T', position: { top: 383, left: 873 } }
+];
+
+export const exhaustBlowerTempData = [
+  { id: 'exh_temp', value: 167, label: 'T', position: { top: 420, left: 872 } }
+];
+
+export const lowerZoneTempData = [
+  { id: 'lower_temp', value: 141, label: 'T', position: { top: 445, left: 872 } }
+];
+
+export const steamFuelPressureData = [
+  { id: 'steam_pressure', value: 8, label: 'Руур', position: { top: 500, left: 620 } },
+  { id: 'fuel_pressure', value: 8, label: 'Рмаз', position: { top: 500, left: 620 } }
+];

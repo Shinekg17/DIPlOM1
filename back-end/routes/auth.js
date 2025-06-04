@@ -78,6 +78,11 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+router.get('/parameters/latest', async (req, res) => {
+  const latest = await BoilerParam.find().sort({ timestamp: -1 }).limit(1);
+  res.json(latest[0]);
+});
+
 // server/routes/auth.js - add diagnostic endpoint
 // @route   POST api/auth/test-password-hash
 // @desc    Test password hashing (admin only)

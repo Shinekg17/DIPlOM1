@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import IndustrialProcessDiagram from './IndustrialProcessDiagram';
 import Navbar from './Navbar'; // Import the Navbar component
-
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
 
@@ -12,7 +11,7 @@ const Dashboard = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <IndustrialProcessDiagram />
-      </div>
+      </div>  
     </div>
   );
 };

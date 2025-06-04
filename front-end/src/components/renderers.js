@@ -30,7 +30,53 @@ import {
   controlPanelLabelStyle,
   controlPanelValueStyle,
   controlPanelCellContainerStyle,
-  controlPanelInputStyle
+  controlPanelInputStyle,
+  tvCodeBlockStyle,
+  tvLeftStyle,
+  tvRightStyle,
+  heaterTempContainerStyle,
+  heaterTempLabelStyle,
+  heaterTempValueStyle,
+  airParamContainerStyle,
+  airParamLabelStyle,
+  airParamValueStyle,
+  waterHeaterContainerStyle,
+  waterHeaterLabelStyle,
+  waterHeaterValueStyle,
+  suctionPressureContainerStyle,
+  suctionPressureLabelStyle,
+  suctionPressureValueStyle,
+  flowForceContainerStyle,
+  flowForceLabelStyle,
+  flowForceValueStyle,
+  waterHeaterTempContainerStyle,
+  waterHeaterTempLabelStyle,
+  waterHeaterTempValueStyle,
+   airHeaterContainerStyle,
+  airHeaterLabelStyle,
+  airHeaterValueStyle,
+  o2SensorContainerStyle,
+  o2SensorLabelStyle,
+  o2SensorValueStyle,
+  blowerPressureContainerStyle,
+  blowerPressureLabelStyle,
+  blowerPressureValueStyle,
+  airHeaterVacuumContainerStyle,
+  airHeaterVacuumLabelStyle,
+  airHeaterVacuumValueStyle,
+  suctionAirTempContainerStyle,
+  suctionAirTempLabelStyle,
+  suctionAirTempValueStyle,
+  exhaustBlowerTempContainerStyle,
+  exhaustBlowerTempLabelStyle,
+  exhaustBlowerTempValueStyle,
+  lowerZoneTempContainerStyle,
+  lowerZoneTempLabelStyle,
+  lowerZoneTempValueStyle,
+   dualPressureContainerStyle,
+  dualPressureRowStyle,
+  dualPressureLabelStyle,
+  dualPressureValueStyle
 } from './styles';
 
 // Өгөгдлийн элемент үүсгэх функц
@@ -291,5 +337,368 @@ export const renderProcessPanel = (panel, editMode, editValues, handleValueChang
         ))}
       </div>
     ))}
+  </div>
+);
+
+export const renderCodeBlockPanel = (panel, editMode, editValues, handleValueChange) => (
+  <div
+    key={panel.id}
+    style={{
+      ...tvCodeBlockStyle,
+      top: `${panel.position.top}px`,
+      left: `${panel.position.left}px`
+    }}
+  >
+    {editMode ? (
+      <>
+        <input
+          type="text"
+          value={editValues[`${panel.id}_left`] || panel.leftText}
+          onChange={(e) => handleValueChange(`${panel.id}_left`, e.target.value)}
+          style={{ ...tvLeftStyle, fontSize: '14px', width: '80px' }}
+        />
+        <input
+          type="text"
+          value={editValues[`${panel.id}_right`] || panel.rightText}
+          onChange={(e) => handleValueChange(`${panel.id}_right`, e.target.value)}
+          style={{ ...tvRightStyle, fontSize: '14px', width: '40px' }}
+        />
+      </>
+    ) : (
+      <>
+        <div style={tvLeftStyle}>{panel.leftText}</div>
+        <div style={tvRightStyle}>{panel.rightText}</div>
+      </>
+    )}
+  </div>
+);
+
+
+export const renderBoilerInfoPanel = (panel, editMode, editValues, handleValueChange) => (
+  <div
+    key={panel.id}
+    style={{
+      position: 'absolute',
+      top: `${panel.position.top}px`,
+      left: `${panel.position.left}px`,
+      backgroundColor: 'black',
+      zIndex: 10
+    }}
+  >
+    {panel.rows.map((row, index) => (
+      <div key={index} style={{ display: 'flex', margin: '2px 0' }}>
+        <div style={{
+          width: '40px',
+          backgroundColor: 'red',
+          color: 'white',
+          textAlign: 'center',
+          fontWeight: 'bold',
+          fontSize: '10px',
+          border: '1px solid white'
+        }}>
+          {row.label}
+        </div>
+        <div style={{
+          width: '40px',
+          backgroundColor: 'black',
+          color: 'yellow',
+          textAlign: 'center',
+          fontSize: '10px',
+          border: '1px solid white'
+        }}>
+          {editMode ? (
+            <input
+              type="number"
+              value={editValues[`${panel.id}_${row.label}`] || row.value}
+              onChange={(e) => handleValueChange(`${panel.id}_${row.label}`, e.target.value)}
+              style={{
+                width: '100%',
+                textAlign: 'center',
+                backgroundColor: 'black',
+                color: 'yellow',
+                border: 'none',
+                fontSize: '10px'
+              }}
+            />
+          ) : (
+            row.value
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+export const renderHeaterTemperature = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...heaterTempContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={heaterTempLabelStyle}>{item.label}</div>
+    <div style={heaterTempValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderHeaterAirParam = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...airParamContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={airParamLabelStyle}>{item.label}</div>
+    <div style={airParamValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderWaterHeaterParam = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...waterHeaterContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={waterHeaterLabelStyle}>{item.label}</div>
+    <div style={waterHeaterValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderSuctionPressure = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...suctionPressureContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={suctionPressureLabelStyle}>{item.label}</div>
+    <div style={suctionPressureValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderFlowForce = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...flowForceContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={flowForceLabelStyle}>{item.label}</div>
+    <div style={flowForceValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderWaterHeaterTemp = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...waterHeaterTempContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={waterHeaterTempLabelStyle}>{item.label}</div>
+    <div style={waterHeaterTempValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderAirHeaterParam = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...airHeaterContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={airHeaterLabelStyle}>{item.label}</div>
+    <div style={airHeaterValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderO2Sensor = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...o2SensorContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={o2SensorLabelStyle}>{item.label}</div>
+    <div style={o2SensorValueStyle}>{item.value.toFixed(1)}</div>
+  </div>
+);
+
+export const renderBlowerStaticPressure = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...blowerPressureContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={blowerPressureLabelStyle}>{item.label}</div>
+    <div style={blowerPressureValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderAirHeaterVacuum = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...airHeaterVacuumContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={airHeaterVacuumLabelStyle}>{item.label}</div>
+    <div style={airHeaterVacuumValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderSuctionAirTemp = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...suctionAirTempContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={suctionAirTempLabelStyle}>{item.label}</div>
+    <div style={suctionAirTempValueStyle}>{item.value}</div>
+  </div>
+);
+
+
+export const renderExhaustBlowerTemp = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...exhaustBlowerTempContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={exhaustBlowerTempLabelStyle}>{item.label}</div>
+    <div style={exhaustBlowerTempValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderLowerZoneTemp = (item) => (
+  <div
+    key={item.id}
+    style={{
+      ...lowerZoneTempContainerStyle,
+      top: `${item.position.top}px`,
+      left: `${item.position.left}px`
+    }}
+  >
+    <div style={lowerZoneTempLabelStyle}>{item.label}</div>
+    <div style={lowerZoneTempValueStyle}>{item.value}</div>
+  </div>
+);
+
+export const renderSteamFuelPressure = (items) => (
+  <div style={{
+    ...dualPressureContainerStyle,
+    top: `${items[0].position.top}px`,
+    left: `${items[0].position.left}px`,
+    position: 'absolute'
+  }}>
+    {items.map((item, index) => (
+      <div key={item.id} style={dualPressureRowStyle}>
+        <div style={dualPressureLabelStyle}>{item.label}</div>
+        <div style={dualPressureValueStyle}>{item.value}</div>
+      </div>
+    ))}
+  </div>
+);
+
+export const renderGaugeWithBars = (panel, editMode, editValues, handleValueChange) => (
+  <div
+    key={panel.id}
+    style={{
+      position: 'absolute',
+      top: `${panel.position.top}px`,
+      left: `${panel.position.left}px`,
+      width: '130px',
+      height: '120px',
+      padding: '10px',
+      backgroundColor: '#ddd',
+      border: '2px solid #888',
+      borderRadius: '50%',
+      textAlign: 'center',
+      zIndex: 10
+    }}
+  >
+    <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '5px' }}>
+      {panel.title}
+    </div>
+
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      {/* Зүүн талын тоон утга */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        {panel.bars.map((bar, index) => (
+          <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+            <div style={{
+              width: '15px', backgroundColor: 'red', color: 'white',
+              fontSize: '10px', fontWeight: 'bold', textAlign: 'center'
+            }}>{bar.label}</div>
+            <div style={{
+              width: '30px', backgroundColor: 'black', color: 'lime',
+              fontSize: '10px', textAlign: 'center'
+            }}>
+              {editMode ? (
+                <input
+                  type="number"
+                  value={editValues[`${panel.id}_value_${bar.label}`] || bar.value}
+                  onChange={(e) => handleValueChange(`${panel.id}_value_${bar.label}`, e.target.value)}
+                  style={{ width: '100%', color: 'lime', backgroundColor: 'black', border: 'none' }}
+                />
+              ) : (
+                bar.value
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Баруун талын багана */}
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '3px' }}>
+        {panel.bars.map((bar, index) => {
+          const level = editMode
+            ? parseFloat(editValues[`${panel.id}_level_${bar.label}`]) || bar.level
+            : bar.level;
+
+          return (
+            <div key={index} style={{
+              width: '10px', height: '60px',
+              backgroundColor: 'white', border: '1px solid #333',
+              display: 'flex', alignItems: 'flex-end'
+            }}>
+              <div style={{
+                backgroundColor: 'limegreen',
+                height: `${level * 100}%`,
+                width: '100%'
+              }} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
   </div>
 );

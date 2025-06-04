@@ -1,15 +1,25 @@
 // Main component file
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { temperatureData, pressureData, percentageData, panelData, 
          newPanelData, digitalPanelData, controlPanelData,
-         temperatureVoltageData, processMonitorData } from './initialData';
+         temperatureVoltageData, processMonitorData, codeBlockPanelData, 
+         boilerGaugePanel , boilerInfoPanelData, heaterTemperatureData, 
+         heaterAirParams, waterHeaterParams, suctionPressureData, flowForceData, 
+         waterHeaterTempData, airHeaterParams,  o2SensorData, blowerStaticPressureData,
+         airHeaterVacuumData, suctionAirTempData, exhaustBlowerTempData, lowerZoneTempData,
+         steamFuelPressureData     } from './initialData';
 import { renderDataItem, renderPanel, renderNewPanel, 
          renderDigitalPanel, renderControlPanel, 
-         renderMonitoringPanel, renderProcessPanel } from './renderers';
+         renderMonitoringPanel, renderProcessPanel, renderCodeBlockPanel,
+         renderGaugeWithBars , renderBoilerInfoPanel,
+         renderHeaterAirParam, renderWaterHeaterParam, renderSuctionPressure, 
+         renderFlowForce, renderWaterHeaterTemp, renderAirHeaterParam,
+         renderO2Sensor, renderBlowerStaticPressure, renderAirHeaterVacuum,
+         renderSuctionAirTemp, renderExhaustBlowerTemp, renderLowerZoneTemp,
+         renderSteamFuelPressure} from './renderers';
 
 const IndustrialProcessDiagram = () => {
   // График дээр харуулах параметр сонгох
-  const [selectedParams, setSelectedParams] = useState(['t1', 'p1', 'percentage']);
   
   // Өгөгдлүүдийг state-д хадгалах
   const [temperature, setTemperature] = useState(temperatureData);
@@ -19,28 +29,36 @@ const IndustrialProcessDiagram = () => {
   const [newPanels, setNewPanels] = useState(newPanelData);
   const [digitalPanels, setDigitalPanels] = useState(digitalPanelData);
   const [controlPanel, setControlPanel] = useState(controlPanelData);
-  const [monitoringPanel, setMonitoringPanel] = useState(temperatureVoltageData);
-  const [processPanel, setProcessPanel] = useState(processMonitorData);
-  
+  const [monitoringPanel] = useState(temperatureVoltageData);
+  const [processPanel] = useState(processMonitorData);
+  const [codeBlocks, setCodeBlocks] = useState(codeBlockPanelData);
+  const [gaugePanel, setGaugePanel] = useState(boilerGaugePanel);
+  const [boilerPanel, setBoilerPanel] = useState(boilerInfoPanelData);
+  const [heaterTemps, setHeaterTemps] = useState(heaterTemperatureData);
+  const [airParams, setAirParams] = useState(heaterAirParams);
+  const [waterHeater, setWaterHeater] = useState(waterHeaterParams);
+  const [suctionPressure, setSuctionPressure] = useState(suctionPressureData);
+  const [flowForce, setFlowForce] = useState(flowForceData);
+  const [waterHeaterTemp, setWaterHeaterTemp] = useState(waterHeaterTempData);
+  const [airHeater, setAirHeater] = useState(airHeaterParams);
+  const [o2Sensor, setO2Sensor] = useState(o2SensorData);
+  const [blowerPressure, setBlowerPressure] = useState(blowerStaticPressureData);
+  const [airHeaterVacuum, setAirHeaterVacuum] = useState(airHeaterVacuumData);
+  const [suctionAirTemp, setSuctionAirTemp] = useState(suctionAirTempData);
+  const [exhaustTemp, setExhaustTemp] = useState(exhaustBlowerTempData);
+  const [lowerTemp, setLowerTemp] = useState(lowerZoneTempData);
+  const [steamFuelPressure, setSteamFuelPressure] = useState(steamFuelPressureData);
+  const [isOverflow, setIsOverflow] = useState(false);
+  const [isReliefOpen, setIsReliefOpen] = useState(false);
+  const [actionLogs, setActionLogs] = useState([]);
+
   // Засварлах горимд байгаа эсэх
   const [editMode, setEditMode] = useState(false);
   
   // Засварлаж байгаа утгыг хадгалах
   const [editValues, setEditValues] = useState({});
 
-  // Параметр сонголт өөрчлөх
-  const handleParamSelection = (param) => {
-    setSelectedParams(prev => {
-      if (prev.includes(param)) {
-        return prev.filter(p => p !== param);
-      } else {
-        if (prev.length < 4) { // Хамгийн ихдээ 4 параметр сонгох
-          return [...prev, param];
-        }
-        return prev;
-      }
-    });
-  };
+
 
   // Засварлах горим руу шилжүүлэх
   const toggleEditMode = () => {
@@ -129,6 +147,8 @@ const IndustrialProcessDiagram = () => {
           };
         })
       };
+
+
       
       setTemperature(updatedTempData);
       setPressure(updatedPressData);
@@ -137,6 +157,7 @@ const IndustrialProcessDiagram = () => {
       setNewPanels(updatedNewPanelData);
       setDigitalPanels(updatedDigitalPanelData);
       setControlPanel(updatedControlPanelData);
+      
     } else {
       // Засварлах горим руу орохдоо одоогийн утгуудыг edit values руу хуулах
       const currentValues = {};
@@ -149,7 +170,11 @@ const IndustrialProcessDiagram = () => {
       percentage.forEach(item => {
         currentValues[item.id] = item.value;
       });
-      
+      codeBlocks.forEach(block => {
+      currentValues[`${block.id}_right`] = block.rightText;
+      });
+
+
       // Шинээр нэмсэн панел өгөгдлийг edit values руу нэмэх
       panels.forEach(panel => {
         panel.readings.forEach(reading => {
@@ -157,7 +182,7 @@ const IndustrialProcessDiagram = () => {
           currentValues[editKey] = reading.value;
         });
       });
-      
+
       // Шинэ загварын панел өгөгдлийг edit values руу нэмэх
       newPanels.forEach(panel => {
         panel.rows.forEach((row, rowIndex) => {
@@ -177,7 +202,7 @@ const IndustrialProcessDiagram = () => {
           });
         });
       });
-      
+
       // Шинээр нэмсэн хяналтын панел өгөгдлийг edit values руу нэмэх
       controlPanel.rows.forEach((row, rowIndex) => {
         row.cells.forEach((cell, cellIndex) => {
@@ -185,11 +210,294 @@ const IndustrialProcessDiagram = () => {
           currentValues[editKey] = cell.value;
         });
       });
-      
+      const updatedCodeBlocks = codeBlocks.map(block => ({
+      ...block,
+      rightText: editValues[`${block.id}_right`] !== undefined ? editValues[`${block.id}_right`] : block.rightText
+  }));  
+  setCodeBlocks(updatedCodeBlocks);
+
       setEditValues(currentValues);
     }
     setEditMode(!editMode);
   };
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    setBoilerPanel(prev => ({
+      ...prev,
+      rows: prev.rows.map(row => ({
+        ...row,
+        value: parseFloat((row.value + (Math.random() * 2 - 1)).toFixed(0))
+      }))
+    }));
+  }, 5000);
+  
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setHeaterTemps(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((item.value + (Math.random() * 2 - 1)).toFixed(0))
+      }))
+    );
+  }, 5000);
+
+
+  return () => clearInterval(interval);
+}, []); // зөв
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setAirParams(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((item.value + (Math.random() * 2 - 1)).toFixed(0)) // ±1 хэм өөрчлөлт
+      }))
+    );
+  }, 4000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setWaterHeater(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((item.value + (Math.random() * 2 - 1)).toFixed(0))
+      }))
+    );
+  }, 5000);
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setSuctionPressure(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((item.value + (Math.random() * 0.5 - 0.25)).toFixed(0))
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setFlowForce(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((item.value + (Math.random() * 20 - 10)).toFixed(0))
+      }))
+    );
+  }, 5000);
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setWaterHeaterTemp(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((item.value + (Math.random() * 2 - 1)).toFixed(0))
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setAirHeater(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((item.value + (Math.random() * 1.5 - 0.75)).toFixed(0))
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setO2Sensor(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((Math.random() * 20).toFixed(0)) // 0.0 – 5.0% хооронд хэлбэлзэнэ
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setBlowerPressure(prev =>
+      prev.map(item => ({
+        ...item,
+        value: Math.round(item.value + (Math.random() * 10 - 5)) // +/–5 хэлбэлзэл
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setAirHeaterVacuum(prev =>
+      prev.map(item => ({
+        ...item,
+        value: parseFloat((item.value + (Math.random() * 0.3 - 0.15)).toFixed(1))
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setSuctionAirTemp(prev =>
+      prev.map(item => ({
+        ...item,
+        value: Math.round(item.value + (Math.random() * 3 - 1.5))
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setExhaustTemp(prev =>
+      prev.map(item => ({
+        ...item,
+        value: Math.round(item.value + (Math.random() * 4 - 2))
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setLowerTemp(prev =>
+      prev.map(item => ({
+        ...item,
+        value: Math.round(item.value + (Math.random() * 4 - 2))
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setSteamFuelPressure(prev =>
+      prev.map(item => ({
+        ...item,
+        value: Math.round(item.value + (Math.random() * 2 - 1)) // +/–1 хэлбэлзэл
+      }))
+    );
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+ 
+
+  // --- Аваарын хамгаалалт ---
+ useEffect(() => {
+  const l1 = gaugePanel.bars.find(bar => bar.label === 'L1')?.value ?? 0;
+  const l2 = gaugePanel.bars.find(bar => bar.label === 'L2')?.value ?? 0;
+  const l3 = gaugePanel.bars.find(bar => bar.label === 'L3')?.value ?? 0;
+
+  if (l1 >= 100 || l2 >= 100 || l3 >= 100) {
+    setIsOverflow(true);
+    setIsReliefOpen(true);
+  } else if (l1 <= 50 && l2 <= 50 && l3 <= 50) {
+    setIsOverflow(false);
+    setIsReliefOpen(false);
+  }
+}, [gaugePanel]);
+
+useEffect(() => {
+  if (!isReliefOpen) return;
+
+  const interval = setInterval(() => {
+    setGaugePanel(prev => {
+      const newBars = prev.bars.map(bar => {
+        const decreasedValue = bar.value - 2; // 2-р бууруулна
+        const clampedValue = Math.max(decreasedValue, 0); // 0-ээс доош орохгүй
+        const newLevel = Math.max(0, Math.min(1, (clampedValue + 50) / 100));
+        return { ...bar, value: clampedValue, level: newLevel };
+      });
+      return { ...prev, bars: newBars };
+    });
+  }, 500); // 1 сек тутам бууруулах
+
+  return () => clearInterval(interval);
+}, [isReliefOpen]);
+
+  const toggleRelief = () => {
+  setIsReliefOpen(prev => {
+    const newState = !prev;
+
+    setActionLogs(logs => [
+      ...logs,
+      `Аваарын юүлүүр ${newState ? 'нээгдсэн' : 'хаагдсан'} (${new Date().toLocaleTimeString()})`
+    ]);
+    // Хэрвээ нээж байвал төвшинг бууруулах
+    if (newState) {
+      setGaugePanel(prev => {
+        const newBars = prev.bars.map(bar => {
+         if (['L1', 'L2', 'L3'].includes(bar.label)) {
+            const newValue = Math.max(bar.value - 60, 0);
+            const newLevel = Math.max(0, Math.min(1, (newValue + 50) / 100));
+            return { ...bar, value: newValue, level: newLevel };
+}
+          return bar;
+        });
+        return { ...prev, bars: newBars };
+      });
+    }
+
+    return newState;
+  });
+};
+
+  
+
+const increaseBoilerLevel = () => {
+  setGaugePanel(prev => {
+    const newBars = prev.bars.map(bar => {
+      const increasedValue = Math.min(bar.value + 15, 150);
+      const newLevel = Math.max(0, Math.min(1, increasedValue / 100));
+      return { ...bar, value: increasedValue, level: newLevel };
+    });
+
+    // ✅ Үйлдлийг бүртгэх
+    setActionLogs(logs => [
+      ...logs,
+      `Тогооны түвшин нэмэгдсэн (${new Date().toLocaleTimeString()})`
+    ]);
+
+    return { ...prev, bars: newBars };
+  });
+};
 
   // Засварлаж байгаа утгыг өөрчлөх
   const handleValueChange = (id, newValue) => {
@@ -217,30 +525,79 @@ const IndustrialProcessDiagram = () => {
       />
       
       {/* Температурын өгөгдлүүдийг харуулах */}
-      {temperature.map(item => renderDataItem(item, editMode, editValues, handleValueChange))}
+      {temperature.map(item => renderDataItem(item, false, editValues, handleValueChange))}
       
       {/* Даралтын өгөгдлүүдийг харуулах */}
-      {pressure.map(item => renderDataItem(item, editMode, editValues, handleValueChange))}
+      {pressure.map(item => renderDataItem(item, false, editValues, handleValueChange))}
       
       {/* Хувь хэмжээний өгөгдлүүдийг харуулах */}
       {percentage.map(item => renderDataItem(item, editMode, editValues, handleValueChange))}
       
       {/* Шинээр нэмсэн панелийг харуулах */}
-      {panels.map(panel => renderPanel(panel, editMode, editValues, handleValueChange))}
+      {panels.map(panel => renderPanel(panel, false, editValues, handleValueChange))}
       
       {/* Шинэ загварын панелийг харуулах */}
-      {newPanels.map(panel => renderNewPanel(panel, editMode, editValues, handleValueChange))}
+      {newPanels.map(panel => renderNewPanel(panel, false, editValues, handleValueChange))}
       
       {/* Дижитал дэлгэцийн панелийг харуулах */}
-      {digitalPanels.map(panel => renderDigitalPanel(panel, editMode, editValues, handleValueChange))}
+      {digitalPanels.map(panel => renderDigitalPanel(panel, false, editValues, handleValueChange))}
       
-      {/* Шинээр нэмсэн хяналтын панелийг харуулах */}
-      {renderControlPanel(controlPanel, editMode, editValues, handleValueChange)}
+      {/* T КОД блок рендер */}
+      {codeBlocks.map(panel => renderCodeBlockPanel(panel, false, editValues, handleValueChange))}
       
-      {renderMonitoringPanel(monitoringPanel, editMode, editValues, handleValueChange)}
+      {heaterTemps.map(item => renderDataItem(item, false, editValues, handleValueChange))}
 
-      {renderProcessPanel(processPanel, editMode, editValues, handleValueChange)}
+      {airParams.map(item => renderHeaterAirParam(item))}
+
+      {waterHeater.map(item => renderWaterHeaterParam(item))}
+
+      {suctionPressure.map(item => renderSuctionPressure(item))}
+
+      {flowForce.map(item => renderFlowForce(item))}
+
+      {waterHeaterTemp.map(item => renderWaterHeaterTemp(item))}
+
+      {airHeater.map(item => renderAirHeaterParam(item))}
+
+      {o2Sensor.map(item => renderO2Sensor(item))}
+
+      {blowerPressure.map(item => renderBlowerStaticPressure(item))}
+
+      {airHeaterVacuum.map(item => renderAirHeaterVacuum(item))}
+
+      {suctionAirTemp.map(item => renderSuctionAirTemp(item))}
+
+      {exhaustTemp.map(item => renderExhaustBlowerTemp(item))}
+
+      {lowerTemp.map(item => renderLowerZoneTemp(item))}
+
+      {renderSteamFuelPressure(steamFuelPressure)}
+
+
+      {/* Шинээр нэмсэн хяналтын панелийг харуулах */}
+      {renderControlPanel(controlPanel, false, editValues, handleValueChange)}
       
+      {renderMonitoringPanel(monitoringPanel, false, editValues, handleValueChange)}
+
+      {renderProcessPanel(processPanel, false, editValues, handleValueChange)}
+    
+      {renderBoilerInfoPanel(boilerInfoPanelData, false, editValues, handleValueChange)}
+
+      {renderBoilerInfoPanel(boilerPanel, false, editValues, handleValueChange)}
+
+      {renderGaugeWithBars(gaugePanel, false, editValues, handleValueChange)}
+
+      {isOverflow && (
+        <div style={{ position: 'absolute', top: '50px', left: '20px', zIndex: 1000, backgroundColor: 'red', color: 'white', padding: '10px', fontWeight: 'bold', animation: 'blinker 0.1s linear infinite', fontSize: '10px'}}>
+          ⚠️ТҮВШИН ИХ БАЙНА!🔔
+        </div>
+      )}
+
+      <div style={{ position: 'absolute', top: '195px', left: '500px', zIndex: 1000 }}>
+        <button onClick={toggleRelief} style={{ padding: '', backgroundColor: isReliefOpen ? 'orange' : 'green', color: 'white', fontWeight: 'bold', fontSize: '12px' }}>
+          {isReliefOpen ? '✅' : '🧯'}
+        </button>
+      </div>
       {/* Засварлах товчлуур */}
       <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
         <button 
@@ -258,8 +615,40 @@ const IndustrialProcessDiagram = () => {
           {editMode ? 'Хадгалах' : 'Утга Засах'}
         </button>
       </div>
+
+      <div style={{ position: 'absolute', top: '100px', left: '20px', zIndex: 1000 }}>
+  <button 
+    onClick={increaseBoilerLevel}
+    style={{ backgroundColor: 'green', color: 'white', fontWeight: 'bold' }}
+  >
+    🔼 Тогооны түвшин нэмэх
+  </button>
+</div>
+
+<div style={{ 
+  position: 'absolute', 
+  top: '160px', 
+  left: '1150px', 
+  zIndex: 1000, 
+  backgroundColor: '#f8f9fa', 
+  padding: '10px', 
+  borderRadius: '5px', 
+  maxHeight: '200px', 
+  overflowY: 'auto',
+  width: '300px',
+  boxShadow: '0 0 5px gray'
+}}>
+  <h4 style={{ marginTop: 0 }}>📋 Машинистийн үйлдлийн бүртгэл</h4>
+  <ul style={{ fontSize: '14px', paddingLeft: '20px' }}>
+    {actionLogs.slice().reverse().map((log, index) => (
+      <li key={index}>{log}</li>
+    ))}
+  </ul>
+</div>
+
     </div>
   );
 };
+
 
 export default IndustrialProcessDiagram;

@@ -303,3 +303,398 @@ export const controlPanelInputStyle = {
   fontSize: '10px',
   margin: '1px'
 };
+
+export const tvCodeBlockStyle = {
+  position: 'absolute',
+  display: 'inline-flex',
+  border: '1px solid #000',
+  borderRadius: '0px',
+  overflow: 'hidden',
+  fontFamily: 'Arial, sans-serif',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  zIndex: 2
+};
+
+export const tvLeftStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  padding: '1px 3px'
+};
+
+export const tvRightStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  padding: '1px 3px'
+};
+
+
+export const heaterTempContainerStyle = {
+  position: 'absolute',
+  width: '60px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const heaterTempLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '20px',
+  display: 'inline-block',
+  border: '1px solid white'
+};
+
+export const heaterTempValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  height: '16px',
+  textAlign: 'center',
+  display: 'inline-block',
+
+};
+
+export const airParamContainerStyle = {
+  position: 'absolute',
+  width: '60px',
+  height: '20px',
+  zIndex: 10
+};
+
+export const airParamLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '20px',
+  display: 'inline-block'
+};
+
+export const airParamValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const waterHeaterContainerStyle = {
+  position: 'absolute',
+  width: '60px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const waterHeaterLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '15px',
+  display: 'inline-block',
+};
+
+export const waterHeaterValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const suctionPressureContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const suctionPressureLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '20px',
+  display: 'inline-block',
+};
+
+export const suctionPressureValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow', 
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const flowForceContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const flowForceLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '20px',
+  display: 'inline-block',
+
+};
+
+export const flowForceValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const waterHeaterTempContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const waterHeaterTempLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '15px',
+  display: 'inline-block',
+};
+
+export const waterHeaterTempValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const airHeaterContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const airHeaterLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '15px',
+  display: 'inline-block',
+};
+
+export const airHeaterValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const o2SensorContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const o2SensorLabelStyle = {
+  backgroundColor: '#0047ab', // хөх
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '15px',
+  display: 'inline-block',
+};
+
+export const o2SensorValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const blowerPressureContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const blowerPressureLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '20px',
+  display: 'inline-block',
+};
+
+export const blowerPressureValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const airHeaterVacuumContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const airHeaterVacuumLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '15px',
+  display: 'inline-block',
+};
+
+export const airHeaterVacuumValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const suctionAirTempContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const suctionAirTempLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '15px',
+  display: 'inline-block',
+};
+
+export const suctionAirTempValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '30px',
+  textAlign: 'center',
+  display: 'inline-block'
+};
+
+export const exhaustBlowerTempContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const exhaustBlowerTempLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '13px',
+  display: 'inline-block',
+};
+
+export const exhaustBlowerTempValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '25px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const lowerZoneTempContainerStyle = {
+  position: 'absolute',
+  width: '70px',
+  height: '28px',
+  zIndex: 10
+};
+
+export const lowerZoneTempLabelStyle = {
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  width: '13px',
+  display: 'inline-block',
+};
+
+export const lowerZoneTempValueStyle = {
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  width: '25px',
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+export const dualPressureContainerStyle = {
+  position: 'absolute',
+  zIndex: 10
+};
+
+export const dualPressureRowStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  margin: '1px 0'
+};
+
+export const dualPressureLabelStyle = {
+  width: '30px',
+  backgroundColor: 'red',
+  color: 'white',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+};
+
+export const dualPressureValueStyle = {
+  width: '30px',
+  backgroundColor: 'black',
+  color: 'yellow',
+  fontSize: '10px',
+  textAlign: 'center',
+};

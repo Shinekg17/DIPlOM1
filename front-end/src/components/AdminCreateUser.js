@@ -25,7 +25,7 @@ const AdminCreateUser = () => {
     setMessage({ type: '', text: '' });
     
     if (!username || !email || !password) {
-      setMessage({ type: 'error', text: 'Please fill in all required fields' });
+      setMessage({ type: 'error', text: 'Шаардлагатай талбаруудыг бүгдийг нь бөглөнө үү!' });
       return;
     }
     
@@ -53,12 +53,12 @@ const AdminCreateUser = () => {
       
       setMessage({ 
         type: 'success', 
-        text: `User ${res.data.username} created successfully` 
+        text: `User ${res.data.username} амжилттай бүртгэгдлээ` 
       });
     } catch (error) {
       setMessage({ 
         type: 'error', 
-        text: error.response?.data?.message || 'Failed to create user' 
+        text: error.response?.data?.message || 'Хэрэглэгч бүртгэхэд алдаа гарлаа' 
       });
     }
   };
