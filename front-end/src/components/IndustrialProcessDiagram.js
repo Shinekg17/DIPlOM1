@@ -18,6 +18,7 @@ import { renderDataItem, renderPanel, renderNewPanel,
          renderSuctionAirTemp, renderExhaustBlowerTemp, renderLowerZoneTemp,
          renderSteamFuelPressure} from './renderers';
 
+
 const IndustrialProcessDiagram = () => {
   // График дээр харуулах параметр сонгох
   
@@ -51,7 +52,7 @@ const IndustrialProcessDiagram = () => {
   const [isOverflow, setIsOverflow] = useState(false);
   const [isReliefOpen, setIsReliefOpen] = useState(false);
   const [actionLogs, setActionLogs] = useState([]);
-
+  const [showLogs, setShowLogs] = useState(false);
   // Засварлах горимд байгаа эсэх
   const [editMode, setEditMode] = useState(false);
   
@@ -452,33 +453,55 @@ useEffect(() => {
   return () => clearInterval(interval);
 }, [isReliefOpen]);
 
-  const toggleRelief = () => {
-  setIsReliefOpen(prev => {
-    const newState = !prev;
+useEffect(() => {
+  const l1 = gaugePanel.bars.find(bar => bar.label === 'L1')?.value ?? 0;
+  const l2 = gaugePanel.bars.find(bar => bar.label === 'L2')?.value ?? 0;
+  const l3 = gaugePanel.bars.find(bar => bar.label === 'L3')?.value ?? 0;
 
-    setActionLogs(logs => [
-      ...logs,
-      `Аваарын юүлүүр ${newState ? 'нээгдсэн' : 'хаагдсан'} (${new Date().toLocaleTimeString()})`
-    ]);
-    // Хэрвээ нээж байвал төвшинг бууруулах
-    if (newState) {
-      setGaugePanel(prev => {
-        const newBars = prev.bars.map(bar => {
-         if (['L1', 'L2', 'L3'].includes(bar.label)) {
-            const newValue = Math.max(bar.value - 60, 0);
-            const newLevel = Math.max(0, Math.min(1, (newValue + 50) / 100));
-            return { ...bar, value: newValue, level: newLevel };
-}
-          return bar;
-        });
-        return { ...prev, bars: newBars };
+  const avgLevel = (l1 + l2 + l3) / 3;
+
+  if (avgLevel <= -150) {
+    setIsOverflow(true);
+    stopBoiler(); // зуух зогсоох
+    setActionLogs("SAFETY", "Тогооны түвшин -150 хүрсэн тул ЗУУХ ЗОГСООВ");
+  } else if (avgLevel <= -100) {
+    setIsOverflow(true);
+    setActionLogs("WARNING", "Тогооны түвшин -100 хүрсэн, гэрлэн дохио өгсөн");
+  } else {
+    setIsOverflow(false); // сэргээнэ
+  }
+}, [gaugePanel]);
+ const toggleRelief = () => {
+  const newState = !isReliefOpen;
+  setIsReliefOpen(newState);
+
+
+  // Зөвхөн 1 удаа log бүртгэнэ
+  setActionLogs(logs => [
+    ...logs,
+    `Аваарын юүлүүр ${newState ? 'нээгдсэн' : 'хаагдсан'} (${new Date().toLocaleTimeString()})`
+  ]);
+
+  // Хэрвээ юүлүүр нээгдэж байвал хэмжигчийн утгыг бууруулна
+  if (newState) {
+    setGaugePanel(prev => {
+      const newBars = prev.bars.map(bar => {
+        if (['L1', 'L2', 'L3'].includes(bar.label)) {
+          const newValue = Math.max(bar.value - 60, 0);
+          const newLevel = Math.max(0, Math.min(1, (newValue + 50) / 100));
+          return { ...bar, value: newValue, level: newLevel };
+        }
+        return bar;
       });
-    }
-
-    return newState;
-  });
+      return { ...prev, bars: newBars };
+    });
+  }
 };
 
+const stopBoiler = () => {
+  console.warn("🚨 Зуух автоматаар зогсов.");
+  // Та хүсвэл нэмэлт log, toggle, үнэлгээ өөрчлөлт оруулж болно
+};
   
 
 const increaseBoilerLevel = () => {
@@ -490,14 +513,38 @@ const increaseBoilerLevel = () => {
     });
 
     // ✅ Үйлдлийг бүртгэх
-    setActionLogs(logs => [
+   
+    return { ...prev, bars: newBars };
+
+    
+  });
+   setActionLogs(logs => [
       ...logs,
       `Тогооны түвшин нэмэгдсэн (${new Date().toLocaleTimeString()})`
     ]);
 
-    return { ...prev, bars: newBars };
-  });
 };
+
+  const decreaseBoilerLevel = () => {
+  setGaugePanel(prev => {
+    const newBars = prev.bars.map(bar => {
+      const decreasedValue = Math.max(bar.value - 20, -160); // -200-аас доош оруулахгүй
+      const newLevel = Math.max(0, Math.min(1, (decreasedValue + 50) / 100));
+      return { ...bar, value: decreasedValue, level: newLevel };
+    });
+
+
+    return { ...prev, bars: newBars };
+    });
+
+    setActionLogs(logs => [
+      ...logs,
+      `Тогооны түвшин буурсан (${new Date().toLocaleTimeString()})`
+    ]);
+  };
+
+  
+
 
   // Засварлаж байгаа утгыг өөрчлөх
   const handleValueChange = (id, newValue) => {
@@ -593,6 +640,11 @@ const increaseBoilerLevel = () => {
         </div>
       )}
 
+      {isOverflow && (
+        <div style={{ position: 'absolute', top: '10px', left: '20px', zIndex: 1000, backgroundColor: 'red', color: 'white', padding: '10px', fontWeight: 'bold', animation: 'blinker 1s linear infinite', fontSize: '12px' }}>
+          ⚠️ АВААР: Тогооны түвшин багассан!
+        </div>
+      )}
       <div style={{ position: 'absolute', top: '195px', left: '500px', zIndex: 1000 }}>
         <button onClick={toggleRelief} style={{ padding: '', backgroundColor: isReliefOpen ? 'orange' : 'green', color: 'white', fontWeight: 'bold', fontSize: '12px' }}>
           {isReliefOpen ? '✅' : '🧯'}
@@ -623,28 +675,75 @@ const increaseBoilerLevel = () => {
   >
     🔼 Тогооны түвшин нэмэх
   </button>
+
+  <div style={{ position: 'absolute', top: '50px', left: '20px', zIndex: 1000 }}>
+  <button 
+    onClick={decreaseBoilerLevel}
+    style={{ backgroundColor: 'crimson', color: 'white', fontWeight: 'bold' }}
+  >
+    🔽 Тогооны түвшин бууруулах
+  </button>
 </div>
 
-<div style={{ 
-  position: 'absolute', 
-  top: '160px', 
-  left: '1150px', 
-  zIndex: 1000, 
-  backgroundColor: '#f8f9fa', 
-  padding: '10px', 
-  borderRadius: '5px', 
-  maxHeight: '200px', 
-  overflowY: 'auto',
-  width: '300px',
-  boxShadow: '0 0 5px gray'
-}}>
-  <h4 style={{ marginTop: 0 }}>📋 Машинистийн үйлдлийн бүртгэл</h4>
-  <ul style={{ fontSize: '14px', paddingLeft: '20px' }}>
-    {actionLogs.slice().reverse().map((log, index) => (
-      <li key={index}>{log}</li>
-    ))}
-  </ul>
 </div>
+
+<div style={{ position: 'absolute', top: '120px', left: '1200px', zIndex: 1000 }}>
+  <button 
+    onClick={() => setShowLogs(prev => !prev)}
+    style={{
+      backgroundColor: '#007bff',
+      color: 'white',
+      fontWeight: 'bold',
+      padding: '6px 10px',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer'
+    }}
+  >
+    {showLogs ? '✖️ Хаах' : '📋 Үйлдлийг харах'}
+  </button>
+</div>
+
+{showLogs && (
+  <div id="action-log-table" style={{
+    position: 'absolute',
+    top: '160px',
+    left: '1150px',
+    zIndex: 1000,
+    backgroundColor: '#ffffff',
+    padding: '15px',
+    borderRadius: '8px',
+    boxShadow: '0 0 10px rgba(0,0,0,0.2)',
+    maxHeight: '300px',
+    overflowY: 'auto',
+    width: '350px'
+  }}>
+    <h4 style={{ marginTop: 0, fontSize: '16px', fontWeight: 'bold' }}>📋 Машинистийн үйлдлийн бүртгэл</h4>
+    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+      <thead>
+        <tr style={{ backgroundColor: '#f2f2f2' }}>
+          <th style={{ border: '1px solid #ccc', padding: '6px' }}>#</th>
+          <th style={{ border: '1px solid #ccc', padding: '6px' }}>Үйлдэл</th>
+          <th style={{ border: '1px solid #ccc', padding: '6px' }}>Цаг</th>
+        </tr>
+      </thead>
+      <tbody>
+       {Array.isArray(actionLogs) && actionLogs.slice().reverse().map((log, index) => {
+  const [text, time] = log.split('(');
+  return (
+    <tr key={index}>
+      <td style={{ border: '1px solid #ccc', padding: '6px', textAlign: 'center' }}>{index + 1}</td>
+      <td style={{ border: '1px solid #ccc', padding: '6px' }}>{text.trim()}</td>
+      <td style={{ border: '1px solid #ccc', padding: '6px' }}>{time?.replace(')', '')}</td>
+    </tr>
+  );
+})}
+      </tbody>
+    </table>
+  </div>
+  
+)}
+
 
     </div>
   );

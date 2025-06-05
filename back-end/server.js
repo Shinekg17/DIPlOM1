@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const cors = require('cors');
 const app = express();
+const logRoutes = require('./routes/Logs');
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/api/logs', logRoutes);
 
 // Import routes
 const authRoutes = require('./routes/auth');
