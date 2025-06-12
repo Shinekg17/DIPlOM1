@@ -561,7 +561,7 @@ const increaseBoilerLevel = () => {
       maxWidth: '1700px',
       height: '700px', 
       backgroundColor: 'white', 
-      overflow: 'auto',
+      overflow: 'auto', 
       margin: '0 auto' // Center the container
     }}>
       {/* Фон зураг */}
@@ -588,8 +588,7 @@ const increaseBoilerLevel = () => {
       
       {/* Дижитал дэлгэцийн панелийг харуулах */}
       {digitalPanels.map(panel => renderDigitalPanel(panel, false, editValues, handleValueChange))}
-      
-      {/* T КОД блок рендер */}
+    
       {codeBlocks.map(panel => renderCodeBlockPanel(panel, false, editValues, handleValueChange))}
       
       {heaterTemps.map(item => renderDataItem(item, false, editValues, handleValueChange))}
@@ -645,11 +644,13 @@ const increaseBoilerLevel = () => {
           ⚠️ АВААР: Тогооны түвшин багассан!
         </div>
       )}
+
       <div style={{ position: 'absolute', top: '195px', left: '500px', zIndex: 1000 }}>
         <button onClick={toggleRelief} style={{ padding: '', backgroundColor: isReliefOpen ? 'orange' : 'green', color: 'white', fontWeight: 'bold', fontSize: '12px' }}>
           {isReliefOpen ? '✅' : '🧯'}
         </button>
       </div>
+      
       {/* Засварлах товчлуур */}
       <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
         <button 
